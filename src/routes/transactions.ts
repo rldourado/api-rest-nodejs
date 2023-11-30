@@ -4,7 +4,29 @@ import { z } from 'zod'
 import { knex } from '../database'
 import { checkSessionIdExists } from '../middlewares/check-session-id-exists'
 
+/*
+Tipos de Testes:
+
+- Unitários
+  - Testa uma unidade da aplicação (teste isolado)
+
+- Integração
+  - Testa a comunicação entre duas ou mais unidades
+
+- e2e - ponta a ponta (ou fim a fim)
+  - Simula um usuário operando a aplicação
+
+Pirâmide de Testes:
+- 2e2: não dependem de tecnologia nem de arquitetura - mais fáceis - menor quantidade
+- integração: maior quantidade que e2e, menor quantidade que unitários
+- unitários: maior quantidade 
+*/
+
 export async function transactionsRoutes(app: FastifyInstance) {
+  app.addHook('preHandler', async (request, reply) => {
+    console.log(`[${request.method}] ${request.url}`)
+  })
+
   app.get(
     '/',
     {
